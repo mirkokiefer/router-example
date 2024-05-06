@@ -5,12 +5,13 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Slot, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
 import { useColorScheme } from "@/components/useColorScheme";
 import useAuth from "@/hooks/useAuth";
+import { AuthProvider } from "@/lib/AuthContext";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -46,19 +47,12 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-  const { isAuth } = useAuth();
-
-  console.log(isAuth);
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        {isAuth ? (
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        ) : (
-          <Stack.Screen name="signIn" />
-        )}
-      </Stack>
+      <AuthProvider>
+      <Slot />
+      </AuthProvider>
     </ThemeProvider>
   );
 }

@@ -1,14 +1,24 @@
-import useAuth from "@/hooks/useAuth";
-import { Pressable, Text, View } from "react-native";
+import { useAuth } from "@/lib/AuthContext";
+import { router } from "expo-router";
+import { Pressable, Text, TouchableOpacity, View } from "react-native";
 
 export default function SignIn() {
   const { signIn } = useAuth();
 
+  console.info('SignIn');
+
+  async function handleSignIn() {
+    await signIn();
+
+    router.replace('/');
+  }
+
   return (
-    <View>
-      <Pressable onPress={signIn}>
-        <Text>You are not authenticated, click to sign in</Text>
-      </Pressable>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text style={{ fontSize: 24 }}>SignIn</Text>
+      <TouchableOpacity onPress={handleSignIn}>
+        <Text>Sign In</Text>
+      </TouchableOpacity>
     </View>
   );
 }
